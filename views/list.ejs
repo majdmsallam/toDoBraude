@@ -1,0 +1,203 @@
+<%- include('partials/header') %>
+<!-- <div class="box" id="heading">
+    <h1> <%= listTitle %> </h1>
+  </div> -->
+<div class=" centered homebg1">
+  <div class="container">
+    <h1 class="display-3"><i class="fa-solid fa-list-check fa-1x"></i> Taskify</h1>
+    <div class="">
+      <h1>Your To-do list</h1>
+      <br>
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+              <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="modalfont1">#</th>
+                      <th scope="col" class="modalfont1">Task name</th>
+                      <th scope="col" class="modalfont1">Priority</th>
+                      <th scope="col" class="modalfont1">When</th>
+                      <th scope="col" class="modalfont1">edit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+
+              <%var i=1; %>
+              <%  newListItems.forEach(function(listItem){ %>
+                <th scope="row" class="modalfont"><%= i %></th>
+                <% i++; %>
+                <td class="modalfont"><%= listItem.name %></td>
+                <td class="modalfont"><%= listItem.priority %></td>
+                <td class="modalfont"><%= listItem.when %></td>
+                <td class="modalfont"><button type="button" class="btn btn-outline-primary" data-toggle="modal"  data-target="#exampleModal" data-whatever="<%= listItem.name %>" data-whatever1="<%= listItem.id %>"><i class="fa-solid fa-pen-to-square"></i></button></td>
+              </tr>
+            </tbody>
+
+
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Task</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <form class="" action="/delete" method="post">
+                                  <div class="form-group" style="margin-bottom: 3em;">
+                                     <label for="task-name" style="font-size: 1.2em;">Task Name:</label>
+                                     <input type="text" class="form-control " name="taskname" id="task-name" style="margin-bottom: 1em;">
+                                   </div>
+                                   <div class="form-group sr-only" >
+                                    <label for="message-text" class="col-form-label">Message:</label>
+                                    <textarea  class="form-control" name="taskid" id="message-text"></textarea>
+                                  </div>
+                                   <div class="form-group" style="margin-bottom: 3em;">
+                                     <label style="font-size: 1.2em;">Priority:</label>
+                                     <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                       <input class="form-check-input" type="radio" name="priority" id="high" value="high">
+                                       <label class="form-check-label" for="high">
+                                         <span class="badge badge-danger" style="font-size: 1em; padding: 0.5em 1em;">High</span>
+                                       </label>
+                                     </div>
+                                     <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                       <input class="form-check-input" type="radio" name="priority" id="medium" value="medium">
+                                       <label class="form-check-label" for="medium">
+                                         <span class="badge badge-warning" style="font-size: 1em; padding: 0.5em 1em;">Medium</span>
+                                       </label>
+                                     </div>
+                                     <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                       <input class="form-check-input" type="radio" name="priority" id="low" value="low">
+                                       <label class="form-check-label" for="low">
+                                         <span class="badge badge-success" style="font-size: 1em; padding: 0.5em 1em;">Low</span>
+                                       </label>
+                                     </div>
+                                   </div>
+                                   <div class="form-group" style="margin-bottom: 3em;">
+                                     <label style="font-size: 1.2em;">When:</label>
+                                     <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                       <input class="form-check-input" type="radio" name="when" id="today" value="today">
+                                       <label class="form-check-label" for="today">
+                                         <span class="badge badge-info" style="font-size: 1em; padding: 0.5em 1em;">Today</span>
+                                       </label>
+                                     </div>
+                                     <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                       <input class="form-check-input" type="radio" name="when" id="later" value="later">
+                                       <label class="form-check-label" for="later">
+                                         <span class="badge badge-secondary" style="font-size: 1em; padding: 0.5em 1em;">Later</span>
+                                       </label>
+                                     </div>
+                                   </div>
+                                   <div class="form-group" style="text-align: center; margin-top: 1em;">
+                                       <button type="submit" value="<%= listItem._id %>" name="checkbox" class="btn btn-danger modalfont" style="width: 100%; font-size: 1.2em;">Delete</button>
+                                     </div>
+                                </form>
+                              </div>
+                              <div class="modal-footer">
+                                <form class="" action="/update" method="post">
+                                <button type="button" class="btn btn-secondary modalfont" data-dismiss="modal">Close</button>
+                                <input type="hidden" name="ItemID" value="<%= listItem._id %>">
+                                <button type="submit" value="" name="itemNewName" class="btn btn-primary modalfont" onclick="getTaskName()">Save changes</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                      <script>
+                      function getTaskName() {
+                        const taskName = document.querySelector('#task-name').value;
+                        document.querySelector('button[name="itemNewName"]').value = taskName;
+
+                      }
+                      </script>
+
+                     <script>
+                       $('#exampleModal').on('show.bs.modal', function (event) {
+                       var button = $(event.relatedTarget) // Button that triggered the modal
+                       var recipient = button.data('whatever') // Extract info from data-* attributes
+                       var msg = button.data('whatever1')
+                       // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                       var modal = $(this)
+                      // modal.find('.modal-title').text('New message to ' + recipient)
+                       modal.find('.modal-body input').val(recipient)
+                       modal.find('.modal-body textarea').val(msg)
+                       modal.find('.modal-footer input').val(msg)
+                     })
+                     </script>
+
+
+              <%  });%>
+
+              </table>
+              <form class="listitem" action="/list" method="post">
+
+                <button type="button" class="abtn btn btn-outline-primary btn-lg btn-block" name="list" value="<%= listTitle %>" data-toggle="modal" data-target="#exampleModalCenter">Add Task</button>
+                <!-- Modal -->
+                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle">Add task</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" class="listinput" style="margin-bottom: 3em;" name="newItem" placeholder="New Item" autocomplete="off">
+                            <div class="form-group" style="margin-bottom: 3em;">
+                              <label style="font-size: 1.2em;">Priority:</label>
+                              <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                <input class="form-check-input" type="radio" name="priority" id="high" value="high">
+                                <label class="form-check-label" for="high">
+                                  <span class="badge badge-danger" style="font-size: 1em; padding: 0.5em 1em;">High</span>
+                                </label>
+                              </div>
+                              <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                <input class="form-check-input" type="radio" name="priority" id="medium" value="medium">
+                                <label class="form-check-label" for="medium">
+                                  <span class="badge badge-warning" style="font-size: 1em; padding: 0.5em 1em;">Medium</span>
+                                </label>
+                              </div>
+                              <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                <input class="form-check-input" type="radio" name="priority" id="low" value="low">
+                                <label class="form-check-label" for="low">
+                                  <span class="badge badge-success" style="font-size: 1em; padding: 0.5em 1em;">Low</span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 3em;">
+                              <label style="font-size: 1.2em;">When:</label>
+                              <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                <input class="form-check-input" type="radio" name="when" id="today" value="today">
+                                <label class="form-check-label" for="today">
+                                  <span class="badge badge-info" style="font-size: 1em; padding: 0.5em 1em;">Today</span>
+                                </label>
+                              </div>
+                              <div class="form-check form-check-inline" style="margin-left: 1em;">
+                                <input class="form-check-input" type="radio" name="when" id="later" value="later">
+                                <label class="form-check-label" for="later">
+                                  <span class="badge badge-secondary" style="font-size: 1em; padding: 0.5em 1em;">Later</span>
+                                </label>
+                              </div>
+                              <button type="submit" class="Circlebtn" name="list" value="<%= listTitle %>" data-toggle="modal" data-target="#exampleModalCenter">+</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </form>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
