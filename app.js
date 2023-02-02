@@ -9,7 +9,6 @@ const passport = require("passport");
 const passportLocal = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const FacebookStrategy = require("passport-facebook").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 
 const app = express();
@@ -97,22 +96,6 @@ passport.use(new GoogleStrategy({
 
 
 
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/list"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
-
-app.get('/auth/facebook',
-  passport.authenticate('facebook'));
-
-
 app.get("/",function(req,res){
   res.render("home");
 });
@@ -132,13 +115,6 @@ app.get('/auth/google/list',
 
 
 
-
-app.get('/auth/facebook/secrets',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/secrets');
-  });
 
 
 app.get("/login",function(req,res){
@@ -319,18 +295,7 @@ app.post('/changepassword', function (req, res) {
        }
    });
 });
-// app.get("/successChagePass",function(req,res){
-//
-//   if(req.isAuthenticated()){
-//       User.findById(req.user.id,function(err,foundUser){
-//         if(err){
-//           console.log(err);
-//         }else{
-//               res.render("successChagePass");
-//       }
-//     });
-//   }
-// });
+
 
 app.listen(3000,function(){
   console.log("Server started on server 3000");
