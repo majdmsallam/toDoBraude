@@ -9,6 +9,7 @@ const passport = require("passport");
 const passportLocal = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 
 const app = express();
@@ -87,12 +88,32 @@ passport.use(new GoogleStrategy({
     User.findOrCreate({ googleId: profile.id}, function (err, user) {
       user.firstName=profile.name.givenName;
       user.lastName=profile.name.familyName;
+      user.username=profile.id;
       user.save(function (err) {
       return cb(err, user);
     });
     });
   }
 ));
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/list"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      user.firstName=profile.displayName;
+      user.username=profile.id;
+      user.save(function (err) {
+      return cb(err, user);
+    });
+    });
+  }
+));
+
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
 
 
 
@@ -114,7 +135,12 @@ app.get('/auth/google/list',
   });
 
 
-
+  app.get('/auth/facebook/list',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function(req, res) {
+      // Successful authentication, redirect home.
+      res.redirect('/list');
+    });
 
 
 app.get("/login",function(req,res){
@@ -247,12 +273,12 @@ app.post("/update",function(req,res){
   const checkItemId=req.body.ItemID;
   const newValue=req.body.itemNewName;
   console.log(newValue);
-  User.findById(req.user.id, function(err, user) {
+  User.findById(req.user._id, function(err, user) {
     if(err){
       console.log(err);
     }else{
       console.log(req.body.ItemID);
-      User.updateOne({_id: req.user.id, "items._id": checkItemId}, { $set: { "items.$.name": newValue }}, function(error, user) {
+      User.updateOne({_id: req.user._id, "items._id": checkItemId}, { $set: { "items.$.name": newValue }}, function(error, user) {
         if(error){
           console.log(error);
         }else{
