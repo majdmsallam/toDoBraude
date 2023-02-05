@@ -56,7 +56,7 @@
                                     <label for="message-text" class="col-form-label">Message:</label>
                                     <textarea  class="form-control" name="taskid" id="message-text"></textarea>
                                   </div>
-                                   <div class="form-group" style="margin-bottom: 3em;">
+                                   <div class="form-group"  style="margin-bottom: 3em;">
                                      <label style="font-size: 1.2em;">Priority:</label>
                                      <div class="form-check form-check-inline" style="margin-left: 1em;">
                                        <input class="form-check-input" type="radio" name="priority" id="high" value="high">
@@ -77,7 +77,7 @@
                                        </label>
                                      </div>
                                    </div>
-                                   <div class="form-group" style="margin-bottom: 3em;">
+                                   <div class="form-group"style="margin-bottom: 3em;">
                                      <label style="font-size: 1.2em;">When:</label>
                                      <div class="form-check form-check-inline" style="margin-left: 1em;">
                                        <input class="form-check-input" type="radio" name="when" id="today" value="today">
@@ -99,6 +99,8 @@
                               </div>
                               <div class="modal-footer">
                                 <form class="" action="/update" method="post">
+                                  <input type="hidden" id="ItemPriority" name="ItemPriority" value="">
+                                  <input type="hidden" id="ItemWhen" name="ItemWhen" value="">
                                 <button type="button" class="btn btn-secondary modalfont" data-dismiss="modal">Close</button>
                                 <input type="hidden" name="ItemID" value="<%= listItem._id %>">
                                 <button type="submit" value="" name="itemNewName" class="btn btn-primary modalfont" onclick="getTaskName()">Save changes</button>
@@ -112,7 +114,29 @@
                       <script>
                       function getTaskName() {
                         const taskName = document.querySelector('#task-name').value;
+                        let taskpriority = '';
+                        let taskwhen = '';
+                        if(document.getElementById('high').checked) {
+                            taskpriority="high";
+                        }
+                        else if(document.getElementById('medium').checked) {
+                              taskpriority="medium";
+                        }
+                        else if(document.getElementById('low').checked) {
+                              taskpriority="low";
+                        }
+                        if(document.getElementById('today').checked) {
+                            taskwhen="today";
+                        }
+                        else if(document.getElementById('later').checked) {
+                              taskwhen="later";
+                        }
+                        console.log("ere bl update")
+                        console.log(taskpriority);
+                        document.querySelector('#ItemPriority').value = taskpriority;
+                        document.getElementById("ItemWhen").value = taskwhen;
                         document.querySelector('button[name="itemNewName"]').value = taskName;
+
 
                       }
                       </script>

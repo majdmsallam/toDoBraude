@@ -51,9 +51,9 @@
                 </div>
               </div>
 
-            <button type="submit" class="btn btn-dark">Register</button>
+            <button type="submit" class="btn btn-dark submit-button">Register</button>
           </form>
-
+        <span style='color:red'>*Please fill out all the fields.</span>
         </div>
       </div>
     </div>
@@ -77,3 +77,64 @@
     </div>
     </div>
     </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Please fill all the fields to create your Taskify account
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Passwords does not match!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <script>
+  document.querySelector(".submit-button").addEventListener("click", function(event) {
+    const Firstname = document.querySelector("input[name='Firstname']").value;
+    const Lastname = document.querySelector("input[name='Lastname']").value;
+    const username = document.querySelector("input[name='username']").value;
+    const password = document.querySelector("input[name='password']").value;
+    const password1 = document.querySelector("input[name='password1']").value;
+
+    if (!Firstname || !Lastname || !username || !password || !password1) {
+      event.preventDefault(); // prevent form submission
+      // show the modal
+      // you can use any JavaScript library, such as bootstrap, to show the modal
+      $('#myModal').modal('show');
+    }
+    if(password != password1){
+      $('#myModal1').modal('show');
+    }
+  });
+</script>

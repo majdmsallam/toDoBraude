@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(session({
-  secret: "Our little secret.",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true
 }));
@@ -227,7 +227,7 @@ User.register({username:req.body.username},req.body.password,function(err,user){
 });
 }else{
   console.log("password does not match");
-  res.redirect("/register");
+
 }
 });
 
@@ -248,6 +248,7 @@ app.post("/login",function(req,res){
     }
   });
 });
+
 
 app.post("/delete",function(req,res){
   const checkItemId=req.body.taskid;
@@ -272,13 +273,19 @@ app.post("/delete",function(req,res){
 app.post("/update",function(req,res){
   const checkItemId=req.body.ItemID;
   const newValue=req.body.itemNewName;
+  const newPriority=req.body.ItemPriority;
+  const newWhen=req.body.ItemWhen;
+
   console.log(newValue);
+  console.log(newPriority);
+  console.log(newWhen);
+
   User.findById(req.user._id, function(err, user) {
     if(err){
       console.log(err);
     }else{
-      console.log(req.body.ItemID);
-      User.updateOne({_id: req.user._id, "items._id": checkItemId}, { $set: { "items.$.name": newValue }}, function(error, user) {
+      User.updateOne({_id: req.user._id, "items._id": checkItemId}, { $set: { "items.$.name": newValue, "items.$.priority": newPriority, "items.$.when": newWhen }}, function(error, user) {
+
         if(error){
           console.log(error);
         }else{
