@@ -113,7 +113,7 @@ passport.use(new FacebookStrategy({
 ));
 
 app.get('/auth/facebook',
-  passport.authenticate('facebook'));
+passport.authenticate('facebook-token', { session: false }));
 
 
 
